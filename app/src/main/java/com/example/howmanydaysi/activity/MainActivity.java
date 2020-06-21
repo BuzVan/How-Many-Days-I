@@ -1,6 +1,7 @@
 package com.example.howmanydaysi.activity;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -38,13 +39,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
-
+        //приветствие
         if (Preference.isFirstOpen()){
-            Toast.makeText(this,
-                    "Добро пожаловать!\nВы запустили приложение в первый раз",
-                    Toast.LENGTH_SHORT).show();
+
             //данные по умолчанию
             Preference.setDefaultPreference();
 
@@ -56,6 +53,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             PendingIntent pendingIntent1 = PendingIntent.getBroadcast(this, 0, intent1, 0);
             AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
             NotificationActivity.setAlarmManager(this, pendingIntent, pendingIntent1, alarmManager);//переходим к методу установки
+
+            AlertDialog alertDialog =
+                    new AlertDialog.Builder(this)
+                            .setTitle(R.string.hello_title)
+                            .setPositiveButton("ОК", (dialog, id) -> {
+                                // Закрываем окно
+                                dialog.cancel();
+                            }).create();
+                alertDialog.setMessage(getString(R.string.hello_message));
+            alertDialog.show();
         }
 
 
@@ -71,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {//выбор эелемента из шторки
 

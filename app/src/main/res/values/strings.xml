@@ -3,7 +3,7 @@
     <string name="statistic_name">События</string>
     <string name="notification_name">Уведомление</string>
     <string name="menu_name">меню</string>
-    <string name="heading_name">Сколько дней я...?</string>
+    <string name="heading_name">Сколько дней я…?</string>
     <string name="notification_in_name">уведомление в</string>
     <string name="melody_name">звук</string>
     <string name="vibration_name">вибрация</string>
@@ -23,5 +23,7 @@
     <string name="alarm_title">Отметьте события до полуночи</string>
     <string name="alarm_text">Если вы не успеете отметиться до полуночи, то это засчитается как пропуск дня</string>
     <string name="days_now_name">Текущая цепочка:</string>
+    <string name="hello_message">Вы в первый раз запустили наше приложение. Перейдите во вкладку События, там вы сможете создать своё первое событие!\nВо вкладке Уведомление вы сможете настроить время уведомлений под себя.\nПриятного пользования!</string>
+    <string name="hello_title">Первый запуск!</string>
 
 </resources>
