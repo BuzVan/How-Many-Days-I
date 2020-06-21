@@ -11,9 +11,9 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.NotificationActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.NewEventActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.StatisticItemActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.StatisticActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.EventExecutionActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.EventItemActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AllEventsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.EventsExecutionActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.MainActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

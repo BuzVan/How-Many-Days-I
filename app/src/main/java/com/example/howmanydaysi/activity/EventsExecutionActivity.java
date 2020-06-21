@@ -28,7 +28,7 @@ import com.example.howmanydaysi.alarm.AlarmService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventExecutionActivity extends AppCompatActivity {
+public class EventsExecutionActivity extends AppCompatActivity {
     RecyclerView eventRecyclerView;
     EventListAdapter eventListAdapter;
     DBHelper dBHelper;
@@ -66,22 +66,14 @@ public class EventExecutionActivity extends AppCompatActivity {
                 }
             }
         });
-        eventRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View v, int position) {
-                        CheckBox checkBox = v.findViewById(R.id.checkBox);
-                        Event event = events.get(position);
-                        checkBox.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                boolean checked = ((CheckBox) v).isChecked();
-                                event.check = checked;
-                            }
-                        });
+        eventRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), (v, position) -> {
+            CheckBox checkBox = v.findViewById(R.id.checkBox);
+            Event event = events.get(position);
+            checkBox.setOnClickListener(v1 -> {
+                event.setCheck(((CheckBox) v1).isChecked());
+            });
 
-
-                    }
-                })
+        })
         );
 
     }
@@ -109,7 +101,7 @@ public class EventExecutionActivity extends AppCompatActivity {
                 EventEntity eventEntity = new EventEntity(cursor.getString(eventIndex),
                         cursor.getInt(iconIndex), cursor.getInt(currentQuantityIndex),
                         cursor.getInt(recordQuantityIndex));
-                Event event = new Event(eventEntity, false);
+                Event event = new Event(eventEntity, true);
                 events.add(event);
                 eventListAdapter.eventEntityList.add(eventEntity);
             } while (cursor.moveToNext());
@@ -139,9 +131,9 @@ public class EventExecutionActivity extends AppCompatActivity {
         for (int i = 0; i < events.size(); i++) {
             ContentValues contentValues = new ContentValues();
             contentValues.put(DBHelper.FIELD_EVENT, eventListAdapter.eventEntityList.get(i).text);
-            contentValues.put(DBHelper.FIELD_ICON, eventListAdapter.eventEntityList.get(i).iconID);
+            contentValues.put(DBHelper.FIELD_ICON, eventListAdapter.eventEntityList.get(i).getIconID());
             cursor.moveToPosition(i);
-            if (events.get(i).check) {
+            if (events.get(i).isCheck()) {
                 int current = cursor.getInt(currentQuantityIndex) + 1;
                 int record = cursor.getInt(recordQuantityIndex);
                 contentValues.put(DBHelper.FIELD_CURRENT_QUANTITY, current);
@@ -151,7 +143,7 @@ public class EventExecutionActivity extends AppCompatActivity {
 
             } else {
                 contentValues.put(DBHelper.FIELD_CURRENT_QUANTITY, 0);
-                contentValues.put(DBHelper.FIELD_RECORD_QUANTITY, eventListAdapter.eventEntityList.get(i).record_quantity);
+                contentValues.put(DBHelper.FIELD_RECORD_QUANTITY, eventListAdapter.eventEntityList.get(i).getRecord_quantity());
             }
             database.update(DBHelper.TABLE_EVENTS, contentValues, DBHelper.FIELD_ID + "=" + (i + 1), null);
         }
@@ -162,14 +154,14 @@ public class EventExecutionActivity extends AppCompatActivity {
 
 
 
-        OKButton.setClickable(true);
+
         Preference.setAppPreference(Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED,false);
         Preference.setAppPreference(Preference.APP_PREFERENCES_NAME_VISITED, true);
         AlarmService.CloseAlarm();
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(intent);
-
+        OKButton.setClickable(true);
         this.finish();
     }
 

@@ -6,7 +6,7 @@
     android:background="@color/baseBackground"
     android:orientation="horizontal"
 
-    tools:context=".activity.StatisticActivity">
+    tools:context=".activity.AllEventsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

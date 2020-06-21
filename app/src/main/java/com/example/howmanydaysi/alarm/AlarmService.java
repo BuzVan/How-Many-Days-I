@@ -7,14 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Bundle;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.example.howmanydaysi.activity.EventExecutionActivity;
+import com.example.howmanydaysi.activity.EventsExecutionActivity;
 import com.example.howmanydaysi.R;
 import com.example.howmanydaysi.preferences.Preference;
 
@@ -45,7 +42,8 @@ public class AlarmService extends BroadcastReceiver {
         melody = Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_MELODY, false);
 
 
-        Intent notificationIntent = new Intent(context, EventExecutionActivity.class);
+        Intent notificationIntent = new Intent(context, EventsExecutionActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent contentIntent = PendingIntent.getActivity(context,
                 1, notificationIntent,
                 0);
@@ -55,9 +53,9 @@ public class AlarmService extends BroadcastReceiver {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(context, CHANNEL_ID)
                         .setSmallIcon(R.drawable.icon_calendar)
-                        .setContentTitle("Отметьте успешные события до полуночи")
+                        .setContentTitle(context.getString(R.string.alarm_title))
                         .setContentIntent(contentIntent)
-                        .setStyle(new NotificationCompat.BigTextStyle().bigText("Если вы не успеете отметиться до полуночи, то это засчитается как пропуск дня"))
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(context.getString(R.string.alarm_text)))
                         .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.icon_calendar))
                         .setColor(Color.GRAY)
                         .setOngoing(true)

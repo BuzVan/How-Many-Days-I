@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -114,9 +115,9 @@ boolean notification, melody, vibrate;
             EventEntity eventEntity = eventEntities.get(i);
             ContentValues contentValues = new ContentValues();
             contentValues.put(DBHelper.FIELD_EVENT, eventEntity.text);
-            contentValues.put(DBHelper.FIELD_ICON, eventEntity.iconID);
+            contentValues.put(DBHelper.FIELD_ICON, eventEntity.getIconID());
             contentValues.put(DBHelper.FIELD_CURRENT_QUANTITY, 0);
-            contentValues.put(DBHelper.FIELD_RECORD_QUANTITY, eventEntity.record_quantity);
+            contentValues.put(DBHelper.FIELD_RECORD_QUANTITY, eventEntity.getRecord_quantity());
             database.update(DBHelper.TABLE_EVENTS, contentValues, DBHelper.FIELD_ID + "=" + (i + 1), null);
         }
     }
@@ -179,5 +180,13 @@ boolean notification, melody, vibrate;
         return true;
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED,false)){
+            Intent in = new Intent(getApplicationContext(), EventsExecutionActivity.class);
+            in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(in);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.howmanydaysi.adapter;
 
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.howmanydaysi.R;
-import com.example.howmanydaysi.model.Event;
 import com.example.howmanydaysi.model.EventEntity;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class EventListAdapter extends RecyclerView.Adapter  {
@@ -30,7 +31,6 @@ public class EventListAdapter extends RecyclerView.Adapter  {
     public int getPosition() {
         return position;
     }
-
     public void setPosition(int position) {
         this.position = position;
     }
@@ -40,7 +40,7 @@ public class EventListAdapter extends RecyclerView.Adapter  {
         View view;
         if (viewType == STATISTIC_TYPE)
             view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.event_item_statistic, parent, false);
+                    .inflate(R.layout.event_item, parent, false);
         else
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.event_item_choice, parent, false);
@@ -69,7 +69,15 @@ public class EventListAdapter extends RecyclerView.Adapter  {
         }
         else return EXECUTION_TYPE;
     }
-
+    public void SortList(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            eventEntityList.sort((o1, o2) -> {
+                if (o1.getCurrent_quantity()== o2.getCurrent_quantity()) return 0;
+                else if (o1.getCurrent_quantity()< o2.getCurrent_quantity()) return 1;
+                else return -1;
+            });
+        }
+    }
 
 }
 

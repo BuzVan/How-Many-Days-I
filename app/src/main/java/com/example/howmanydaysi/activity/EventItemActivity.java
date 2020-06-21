@@ -1,6 +1,6 @@
 package com.example.howmanydaysi.activity;
 
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -13,21 +13,22 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.howmanydaysi.R;
 import com.example.howmanydaysi.dataDase.DBHelper;
 import com.example.howmanydaysi.preferences.Preference;
+import com.example.howmanydaysi.service.WordsForm;
 
 import java.util.Calendar;
 
 import sun.bob.mcalendarview.MCalendarView;
 import sun.bob.mcalendarview.vo.DateData;
 
-public class StatisticItemActivity extends AppCompatActivity {
+public class EventItemActivity extends AppCompatActivity {
     DBHelper dBHelper;
     SQLiteDatabase database;
-    TextView  quantityTextView, eventTextView;
+    TextView  quantityTextView, eventTextView, recordTextView;
    MCalendarView calendarView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_statistic);
+        setContentView(R.layout.activity_item_event);
         //стрелочка в оглавлении
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -37,6 +38,7 @@ public class StatisticItemActivity extends AppCompatActivity {
 
         quantityTextView= findViewById(R.id.quantity_days_text);
         eventTextView= findViewById(R.id.event_text_view);
+        recordTextView = findViewById(R.id.record_text);
         calendarView= findViewById(R.id.calendar);
         calendarView.getMarkedDates().getAll().clear();
 
@@ -51,14 +53,24 @@ public class StatisticItemActivity extends AppCompatActivity {
         int recordQuantityIndex = cursor.getColumnIndex(DBHelper.FIELD_RECORD_QUANTITY);
         cursor.moveToPosition(position);
         int recordCount=cursor.getInt(recordQuantityIndex);
-        int currentDays=cursor.getInt(currentQuantityIndex);
+        int currentCount=cursor.getInt(currentQuantityIndex);
+        String event_text = cursor.getString(eventIndex);
+        //ограничение на число теста в событии
+        if (event_text.length()>100){
+           event_text = event_text.substring(0,100) + "...";
+        }
+        eventTextView.setText(event_text);
 
-        eventTextView.setText(cursor.getString(eventIndex));
-        String count_str = recordCount + " " +getDayWordForm(recordCount);
-        quantityTextView.setText(count_str);
+        String rec_count_str =
+                String.format("%s %d %s", getString(R.string.record_name), recordCount, WordsForm.getDayWordForm(recordCount));
+        recordTextView.setText(rec_count_str);
+
+        String curr_str =
+                String.format("%s %d %s", getString(R.string.days_now_name), currentCount, WordsForm.getDayWordForm(currentCount));
+        quantityTextView.setText(curr_str);
         cursor.close();
 
-if(currentDays%7==0 && currentDays!=0){
+if(currentCount%7==0 && currentCount!=0){
     AlertDialog alertDialog =
     new AlertDialog.Builder(this)
             .setTitle("Поздравляю!")
@@ -67,10 +79,10 @@ if(currentDays%7==0 && currentDays!=0){
                 // Закрываем окно
                 dialog.cancel();
             }).create();
-    if (currentDays/7==1)
+    if (currentCount/7==1)
         alertDialog.setMessage("Вы выполняете событие уже целую неделю подряд. Молодец!");
     else
-        alertDialog.setMessage(String.format("%dая неделя прошла! А вы продолжайте дальше :)", currentDays / 7));
+        alertDialog.setMessage(String.format("%dая неделя прошла! А вы продолжайте дальше :)", currentCount / 7));
     alertDialog.show();
 }
 
@@ -79,30 +91,30 @@ if(currentDays%7==0 && currentDays!=0){
             //я использовал сторонний календарь , так как в CalendarView нельзя программно отмечать дни
             //в gradle я его включил, еще ссылка на этот календарь для информации https://github.com/SpongeBobSun/mCalendarView?utm_source=android-arsenal.com&utm_medium=referral&utm_campaign=2420
             //сегодняшний день отмечается другим цветом, в отличии от цепочки дней когда отмечался пользователь
-            now.add(Calendar.DAY_OF_MONTH,-(currentDays-1));
+            now.add(Calendar.DAY_OF_MONTH,-(currentCount-1));
         else
-            now.add(Calendar.DAY_OF_MONTH,-currentDays);
+            now.add(Calendar.DAY_OF_MONTH,-currentCount);
 
-        for(int i=0;i<currentDays; i++)
+        for(int i=0;i<currentCount; i++)
         {
             //отмечаем цепочку дней, когда пользователь отметил выполнение события
             calendarView.markDate(new DateData(now.get(Calendar.YEAR),now.get(Calendar.MONTH)+1,now.get(Calendar.DAY_OF_MONTH)));
             now.add(Calendar.DAY_OF_MONTH,1);
         }
     }
-
-public String getDayWordForm(int quantityDays)//чисто для согласованности числа и слова день))
-{
-    if(quantityDays%10==1&&quantityDays!=11)
-        return "день";
-    else if(quantityDays%10>1&&quantityDays%10<5&&(quantityDays<10||quantityDays>20))
-        return "дня";
-    else
-        return "дней";
-}
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED,false)){
+            Intent in = new Intent(getApplicationContext(), EventsExecutionActivity.class);
+            in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(in);
+        }
     }
 }

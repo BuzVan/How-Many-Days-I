@@ -203,9 +203,9 @@ public class NewEventActivity extends AppCompatActivity {
         EventEntity eventEntity = new EventEntity(eventText.getText().toString(), imageID,  currentDays, recordDays);
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBHelper.FIELD_EVENT, eventEntity.text);
-        contentValues.put(DBHelper.FIELD_ICON, eventEntity.iconID);
-        contentValues.put(DBHelper.FIELD_CURRENT_QUANTITY, eventEntity.current_quantity);
-        contentValues.put(DBHelper.FIELD_RECORD_QUANTITY, eventEntity.record_quantity);
+        contentValues.put(DBHelper.FIELD_ICON, eventEntity.getIconID());
+        contentValues.put(DBHelper.FIELD_CURRENT_QUANTITY, eventEntity.getCurrent_quantity());
+        contentValues.put(DBHelper.FIELD_RECORD_QUANTITY, eventEntity.getRecord_quantity());
         if(position==-1) {//добавление данных
             database.insert(DBHelper.TABLE_EVENTS, null, contentValues);
             Toast.makeText(getApplicationContext(),

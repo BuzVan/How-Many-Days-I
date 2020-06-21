@@ -57,7 +57,7 @@ public class Preference {
 
         e.putBoolean(APP_PREFERENCES_NAME_VISITED, true);
         e.putBoolean(APP_PREFERENCES_NAME_ALARM_ACTIVATED, false);
-        e.putString(APP_PREFERENCES_NAME_TIME, "21:00");
+        e.putString(APP_PREFERENCES_NAME_TIME, "20:00");
         e.putInt(APP_PRECEFENCES_NAME_EVENT_COUNT, 0);
         e.apply();
     }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">HowManyDaysI</string>
-    <string name="statistic_name">события</string>
-    <string name="notification_name">настройка уведомлений</string>
+    <string name="statistic_name">События</string>
+    <string name="notification_name">Уведомление</string>
     <string name="menu_name">меню</string>
     <string name="heading_name">Сколько дней я...?</string>
     <string name="notification_in_name">уведомление в</string>
@@ -19,6 +19,9 @@
     <string name="mark_name">отметка</string>
     <string name="change_name">изменить</string>
     <string name="delete_name">удалить</string>
-    <string name="time_def">21:00</string>
+    <string name="time_def">20:00</string>
+    <string name="alarm_title">Отметьте события до полуночи</string>
+    <string name="alarm_text">Если вы не успеете отметиться до полуночи, то это засчитается как пропуск дня</string>
+    <string name="days_now_name">Текущая цепочка:</string>
 
 </resources>

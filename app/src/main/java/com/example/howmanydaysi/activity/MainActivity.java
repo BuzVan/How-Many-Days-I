@@ -40,11 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-        if(Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED,false)){
-            Intent in = new Intent(getApplicationContext(), EventExecutionActivity.class);
-            startActivity(in);
 
-        }
         if (Preference.isFirstOpen()){
             Toast.makeText(this,
                     "Добро пожаловать!\nВы запустили приложение в первый раз",
@@ -68,6 +64,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onStart() {
         super.onStart();
         Preference.setContext(this);
+        if(Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED,false)){
+            Intent in = new Intent(getApplicationContext(), EventsExecutionActivity.class);
+            in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(in);
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.statistic) {
             {
-                Intent intent = new Intent(getApplicationContext(), StatisticActivity.class);
+                Intent intent = new Intent(getApplicationContext(), AllEventsActivity.class);
                 startActivity(intent);
             }
         } else if (id == R.id.notification) {

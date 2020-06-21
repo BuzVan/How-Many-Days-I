@@ -14,6 +14,7 @@
         android:layout_gravity="center"
         android:background="?android:attr/listChoiceIndicatorMultiple"
         android:button="@null"
+        android:checked="true"
         android:theme="@style/MyCheckBox" />
 
     <LinearLayout
@@ -44,7 +45,7 @@
             android:gravity="center"
             android:text="000"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/button_text_size">
+            android:textSize="@dimen/text_size_min">
 
         </TextView>
 

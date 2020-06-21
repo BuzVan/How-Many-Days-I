@@ -6,7 +6,7 @@
     android:background="@color/baseBackground"
     android:orientation="horizontal"
 
-    tools:context=".activity.StatisticItemActivity">
+    tools:context=".activity.EventItemActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -68,33 +68,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="@dimen/text_start_margin"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="10dp"
         android:background="@android:color/transparent"
         android:gravity="center"
         android:text="@string/record_name"
         android:textAllCaps="true"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/text_size"
+        android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/quantity_days_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendar" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/quantity_days_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
         android:background="@android:color/transparent"
+        android:text="@string/days_now_name"
         android:textAlignment="textStart"
         android:textAllCaps="true"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/heading_size"
+        android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/record_text" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

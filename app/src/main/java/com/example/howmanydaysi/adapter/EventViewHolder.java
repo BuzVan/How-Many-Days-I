@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.howmanydaysi.R;
 import com.example.howmanydaysi.model.Event;
 import com.example.howmanydaysi.model.EventEntity;
+import com.example.howmanydaysi.service.WordsForm;
 
 import java.util.List;
 
@@ -42,8 +43,9 @@ public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnC
     public void bind(EventEntity eventEntity){
         eventTextView.setText(eventEntity.text);
         if(quantityTextView!=null)
-            quantityTextView.setText(eventEntity.current_quantity+"");
-        iconImageView.setImageResource(eventEntity.iconID);
+            quantityTextView.setText(
+                    eventEntity.getCurrent_quantity()+ " " + WordsForm.getDayWordForm(eventEntity.getCurrent_quantity()));
+        iconImageView.setImageResource(eventEntity.getIconID());
     }
     //контекстное меню для элемента RecyclerView
     @Override

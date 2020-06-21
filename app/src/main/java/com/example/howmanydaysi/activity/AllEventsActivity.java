@@ -18,11 +18,10 @@ import com.example.howmanydaysi.R;
 import com.example.howmanydaysi.RecyclerItemClickListener;
 import com.example.howmanydaysi.adapter.EventListAdapter;
 import com.example.howmanydaysi.dataDase.DBHelper;
-import com.example.howmanydaysi.model.Event;
 import com.example.howmanydaysi.model.EventEntity;
 import com.example.howmanydaysi.preferences.Preference;
 
-public class StatisticActivity extends AppCompatActivity {
+public class AllEventsActivity extends AppCompatActivity {
     RecyclerView eventRecyclerView;
     EventListAdapter eventListAdapter;
     DBHelper dBHelper;
@@ -33,7 +32,7 @@ public class StatisticActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_statistic);
+        setContentView(R.layout.activity_all_events);
         //стрелочка в оглавлении
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,7 +49,7 @@ public class StatisticActivity extends AppCompatActivity {
         eventRecyclerView.addOnItemTouchListener( new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
-                        Intent intent = new Intent(getApplicationContext(), StatisticItemActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), EventItemActivity.class);
                         intent.putExtra("position",position);
                         startActivity(intent);
                     }
@@ -99,9 +98,10 @@ public void setListEvent()//установление значений в Recycle
                     cursor.getInt(recordQuantityIndex));
             eventListAdapter.eventEntityList.add(eventEntity);
         } while (cursor.moveToNext());
-
+        //eventListAdapter.SortList();
     }
     cursor.close();
+
     eventRecyclerView.setAdapter(eventListAdapter);
     //добавление в таблицу количество элементов
 }
@@ -158,9 +158,9 @@ public void setListEvent()//установление значений в Recycle
             EventEntity eventEntity =eventListAdapter.eventEntityList.get(i);
             ContentValues contentValues = new ContentValues();
             contentValues.put(DBHelper.FIELD_EVENT, eventEntity.text);
-            contentValues.put(DBHelper.FIELD_ICON, eventEntity.iconID);
-            contentValues.put(DBHelper.FIELD_CURRENT_QUANTITY, eventEntity.current_quantity);
-            contentValues.put(DBHelper.FIELD_RECORD_QUANTITY, eventEntity.record_quantity);
+            contentValues.put(DBHelper.FIELD_ICON, eventEntity.getIconID());
+            contentValues.put(DBHelper.FIELD_CURRENT_QUANTITY, eventEntity.getCurrent_quantity());
+            contentValues.put(DBHelper.FIELD_RECORD_QUANTITY, eventEntity.getRecord_quantity());
                 database.insert(DBHelper.TABLE_EVENTS, null, contentValues);
         }
 
@@ -171,4 +171,13 @@ public void setListEvent()//установление значений в Recycle
         startActivity(intent);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED,false)){
+            Intent in = new Intent(getApplicationContext(), EventsExecutionActivity.class);
+            in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(in);
+        }
+    }
 }

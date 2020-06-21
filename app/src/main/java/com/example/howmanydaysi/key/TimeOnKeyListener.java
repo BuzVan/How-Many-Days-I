@@ -24,7 +24,7 @@ import static android.view.KeyEvent.KEYCODE_ENTER;
 public class TimeOnKeyListener implements View.OnKeyListener{
     private EditText editText;
     private Context context;
-
+    private boolean isFirstPress;
 
     public TimeOnKeyListener(EditText editText, Context context) {
         this.editText =editText;
@@ -49,6 +49,7 @@ public class TimeOnKeyListener implements View.OnKeyListener{
                             Toast.LENGTH_SHORT).show();
 
                 } else {
+
                     try {
                         Date date = new SimpleDateFormat("HH:mm").parse(editText.getText().toString());
 
@@ -56,7 +57,13 @@ public class TimeOnKeyListener implements View.OnKeyListener{
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                         editText.setCursorVisible(false);
                         Preference.setAppPreference(Preference.APP_PREFERENCES_NAME_TIME, editText.getText().toString());
+
                         //если время уведомления введено правильно
+                        if (isFirstPress){
+                            isFirstPress= false;
+                            return true;
+                        }
+                        isFirstPress = true;
 
                         Intent intent = new Intent(context.getApplicationContext(), AlarmService.class);//устанавливаем уведомления на это время
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
