@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">HowManyDaysI</string>
+    <string name="statistic_name">события</string>
+    <string name="notification_name">настройка уведомлений</string>
+    <string name="menu_name">меню</string>
+    <string name="heading_name">Сколько дней я...?</string>
+    <string name="notification_in_name">уведомление в</string>
+    <string name="melody_name">звук</string>
+    <string name="vibration_name">вибрация</string>
+    <string name="notification_time_name">время уведомления</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="record_name">Рекорд:</string>
+    <string name="new_event_name">новое событие</string>
+    <string name="choice_icon_name">выбор специальной иконки</string>
+    <string name="current_quantity_name">дни</string>
+    <string name="event_name">событие</string>
+    <string name="event_execution_name">выполнение событий</string>
+    <string name="mark_name">отметка</string>
+    <string name="change_name">изменить</string>
+    <string name="delete_name">удалить</string>
+    <string name="time_def">21:00</string>
+
+</resources>

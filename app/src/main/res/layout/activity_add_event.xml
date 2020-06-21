@@ -1,0 +1,196 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/baseBackground"
+    android:orientation="horizontal"
+    tools:context=".activity.NewEventActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimaryDark"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/heading_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_event_name"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/heading_size"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteY="7dp" />
+
+    </androidx.appcompat.widget.Toolbar>
+    <EditText
+        android:id="@+id/event_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/base_image_margin"
+        android:layout_marginStart="@dimen/text_start"
+        android:layout_marginEnd="@dimen/text_start"
+        android:textAlignment="viewStart"
+        android:background="@android:color/white"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/button_text_size"
+        android:textStyle="bold"
+        android:inputType="text"
+android:onClick="textViewClick"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+
+    <TextView
+        android:id="@+id/textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/base_image_margin"
+        android:background="@android:color/transparent"
+        android:text="@string/choice_icon_name"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_text_view" />
+
+    <TableLayout
+        android:id="@+id/tablelayout"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/base_image_margin"
+        android:stretchColumns="*"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview">
+
+        <TableRow>
+
+            <ImageView
+                android:id="@+id/food"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="imageClick"
+                android:padding="3dp"
+
+                android:src="@drawable/food" />
+
+            <ImageView
+                android:id="@+id/sport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="imageClick"
+                android:padding="3dp"
+
+                android:src="@drawable/sport" />
+
+            <ImageView
+                android:id="@+id/relax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="imageClick"
+                android:padding="3dp"
+
+                android:src="@drawable/relax" />
+        </TableRow>
+
+        <TableRow>
+
+            <ImageView
+                android:id="@+id/job"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="imageClick"
+                android:padding="3dp"
+
+                android:src="@drawable/job" />
+
+            <ImageView
+                android:id="@+id/study"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="imageClick"
+                android:padding="3dp"
+
+                android:src="@drawable/study" />
+
+            <ImageView
+                android:id="@+id/game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="imageClick"
+
+                android:padding="3dp"
+                android:src="@drawable/game" />
+        </TableRow>
+
+        <TableRow>
+
+            <ImageView
+                android:id="@+id/feel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="imageClick"
+                android:padding="3dp"
+
+                android:src="@drawable/feel" />
+
+            <ImageView
+                android:id="@+id/home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="imageClick"
+                android:padding="3dp"
+
+                android:src="@drawable/home" />
+
+            <ImageView
+                android:id="@+id/phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="imageClick"
+                android:padding="3dp"
+
+                android:src="@drawable/phone" />
+        </TableRow>
+    </TableLayout>
+
+    <Button
+
+        android:id="@+id/addb1"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/base_image_margin"
+        android:background="@color/colorPrimary"
+        android:onClick="OKClick"
+        android:text="OK"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/button_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tablelayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id = "@+id/statistic"
+        android:title = "@string/statistic_name" />
+
+    <item
+        android:id = "@+id/notification"
+
+        android:title = "@string/notification_name"/>
+</menu>
