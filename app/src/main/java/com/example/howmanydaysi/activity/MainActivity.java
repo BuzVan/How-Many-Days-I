@@ -11,6 +11,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -26,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Preference.setContext(this);
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -39,11 +39,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        SharedPreferences preferences = Preference.getInstance(this);
         //приветствие
-        if (Preference.isFirstOpen()){
+        if (Preference.isFirstOpen(preferences)){
 
             //данные по умолчанию
-            Preference.setDefaultPreference();
+            Preference.setDefaultPreference(preferences);
 
             //запуск уведомлений
             Intent intent = new Intent(this.getApplicationContext(), AlarmService.class);//устанавливаем уведомления на это время
@@ -70,8 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
-        Preference.setContext(this);
-        if(Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED,false)){
+        if(Preference.getAppPreference(Preference.getInstance(this), Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED,false)){
             Intent in = new Intent(getApplicationContext(), EventsExecutionActivity.class);
             in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(in);
@@ -108,7 +108,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         }
     }
-
-
 
 }

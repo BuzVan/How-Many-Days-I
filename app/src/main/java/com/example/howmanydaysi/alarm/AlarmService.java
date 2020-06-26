@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 
@@ -30,16 +31,16 @@ public class AlarmService extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Preference.setContext(context);
-        Preference.setAppPreference(Preference.APP_PREFERENCES_NAME_REMIND_TODAY,true);
+        SharedPreferences preferences = Preference.getInstance(context);
+        Preference.setAppPreference(preferences,Preference.APP_PREFERENCES_NAME_REMIND_TODAY,true);
 
-        if (Preference.getAppPreference(Preference.APP_PRECEFENCES_NAME_EVENT_COUNT,0)==0) return;
+        if (Preference.getAppPreference(preferences,Preference.APP_PRECEFENCES_NAME_EVENT_COUNT,0)==0) return;
 
-        Preference.setAppPreference(Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED, true);
+        Preference.setAppPreference(preferences,Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED, true);
 
 
-        vibrate = Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_VIBRATE, false);
-        melody = Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_MELODY, false);
+        vibrate = Preference.getAppPreference(preferences,Preference.APP_PREFERENCES_NAME_VIBRATE, false);
+        melody = Preference.getAppPreference(preferences,Preference.APP_PREFERENCES_NAME_MELODY, false);
 
 
         Intent notificationIntent = new Intent(context, EventsExecutionActivity.class);

@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -62,7 +63,7 @@ boolean notification, melody, vibrate;
         notification_time.setCursorVisible(false);
         vibrateSwitch= findViewById(R.id.switch_compat_vibration);
         melodySwitch= findViewById(R.id.switch_compat_melody);
-        getValuesPreferences();//устанавливаем значения из SharedPreferences
+        getValuesPreferences(Preference.getInstance(this));//устанавливаем значения из SharedPreferences
         vibrateSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
 
@@ -70,7 +71,7 @@ boolean notification, melody, vibrate;
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // в зависимости от значения isChecked выводим нужное сообщение
                 vibrate= isChecked;
-                Preference.setAppPreference(Preference.APP_PREFERENCES_NAME_VIBRATE,vibrate);
+                Preference.setAppPreference(Preference.getInstance(getBaseContext()), Preference.APP_PREFERENCES_NAME_VIBRATE,vibrate);
             }
         });
 
@@ -82,7 +83,7 @@ boolean notification, melody, vibrate;
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // в зависимости от значения isChecked выводим нужное сообщение
                 melody= isChecked;
-                Preference.setAppPreference(Preference.APP_PREFERENCES_NAME_MELODY, melody);
+                Preference.setAppPreference(Preference.getInstance(getBaseContext()), Preference.APP_PREFERENCES_NAME_MELODY, melody);
             }
         });
 
@@ -125,8 +126,8 @@ boolean notification, melody, vibrate;
     static  public void setAlarmManager(Context context, PendingIntent pendingIntent,  PendingIntent pendingIntent1, AlarmManager alarmManager) {
         final SimpleDateFormat format = new SimpleDateFormat("DD-MM-yyyy hh:mm");
 
-
-        String time = Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_TIME, "21:00");
+        SharedPreferences preferences = Preference.getInstance(context);
+        String time = Preference.getAppPreference(preferences, Preference.APP_PREFERENCES_NAME_TIME, "21:00");
         Calendar nextNotification;
         Calendar now= Calendar.getInstance();
         String[] timeStr=time.split(":");
@@ -139,7 +140,7 @@ boolean notification, melody, vibrate;
         {
             nextNotification.add(Calendar.DATE, 1);
         }
-        else if(Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_REMIND_TODAY, false))//если уведомление сегодня уже было
+        else if(Preference.getAppPreference(preferences, Preference.APP_PREFERENCES_NAME_REMIND_TODAY, false))//если уведомление сегодня уже было
         {
             nextNotification.add(Calendar.DATE, 1);
             Toast.makeText(context,
@@ -157,16 +158,16 @@ boolean notification, melody, vibrate;
         Log.i("ALARM_NEXT_NOTIF", format.format(nextNotification.getTime()));
     }
 //устанавливаем значения при открытии activity
-    private void getValuesPreferences() {
+    private void getValuesPreferences(SharedPreferences preferences) {
 
-        vibrate= Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_VIBRATE, true);
+        vibrate= Preference.getAppPreference(preferences, Preference.APP_PREFERENCES_NAME_VIBRATE, true);
         vibrateSwitch.setChecked(vibrate);
 
-        melody= Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_MELODY, true);
+        melody= Preference.getAppPreference(preferences, Preference.APP_PREFERENCES_NAME_MELODY, true);
         melodySwitch.setChecked(melody);
 
 
-        notification_time.setText(Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_TIME, getString(R.string.time_def)));
+        notification_time.setText(Preference.getAppPreference(preferences, Preference.APP_PREFERENCES_NAME_TIME, getString(R.string.time_def)));
     }
 
     public void timeEditTextClick(View view) {
@@ -183,7 +184,7 @@ boolean notification, melody, vibrate;
     @Override
     protected void onStart() {
         super.onStart();
-        if(Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED,false)){
+        if(Preference.getAppPreference(Preference.getInstance(this),Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED,false)){
             Intent in = new Intent(getApplicationContext(), EventsExecutionActivity.class);
             in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(in);

@@ -1,8 +1,10 @@
 package com.example.howmanydaysi.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import com.example.howmanydaysi.service.WordsForm;
 import java.util.Calendar;
 
 import sun.bob.mcalendarview.MCalendarView;
+import sun.bob.mcalendarview.MarkStyle;
 import sun.bob.mcalendarview.vo.DateData;
 
 public class EventItemActivity extends AppCompatActivity {
@@ -41,7 +44,7 @@ public class EventItemActivity extends AppCompatActivity {
         recordTextView = findViewById(R.id.record_text);
         calendarView= findViewById(R.id.calendar);
         calendarView.getMarkedDates().getAll().clear();
-
+        calendarView.setMarkedStyle(MarkStyle.BACKGROUND, getResources().getColor(R.color.colorCalendarMark));
         dBHelper = new DBHelper(getApplicationContext());
         database = dBHelper.getWritableDatabase();
         Bundle intent = getIntent().getExtras();
@@ -85,9 +88,9 @@ if(currentCount%7==0 && currentCount!=0){
         alertDialog.setMessage(String.format("%dая неделя прошла! А вы продолжайте дальше :)", currentCount / 7));
     alertDialog.show();
 }
-
-        Calendar now=Calendar.getInstance();
-        if( Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_REMIND_TODAY,false))//проверяем было сегодня уведомление или нет
+        Calendar now = Calendar.getInstance();
+        SharedPreferences preferences = Preference.getInstance(this);
+        if( Preference.getAppPreference(preferences, Preference.APP_PREFERENCES_NAME_REMIND_TODAY,false))//проверяем было сегодня уведомление или нет
             //я использовал сторонний календарь , так как в CalendarView нельзя программно отмечать дни
             //в gradle я его включил, еще ссылка на этот календарь для информации https://github.com/SpongeBobSun/mCalendarView?utm_source=android-arsenal.com&utm_medium=referral&utm_campaign=2420
             //сегодняшний день отмечается другим цветом, в отличии от цепочки дней когда отмечался пользователь
@@ -99,8 +102,10 @@ if(currentCount%7==0 && currentCount!=0){
         {
             //отмечаем цепочку дней, когда пользователь отметил выполнение события
             calendarView.markDate(new DateData(now.get(Calendar.YEAR),now.get(Calendar.MONTH)+1,now.get(Calendar.DAY_OF_MONTH)));
+
             now.add(Calendar.DAY_OF_MONTH,1);
         }
+
     }
     @Override
     public boolean onSupportNavigateUp() {
@@ -111,10 +116,12 @@ if(currentCount%7==0 && currentCount!=0){
     @Override
     protected void onStart() {
         super.onStart();
-        if(Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED,false)){
+        SharedPreferences preferences = Preference.getInstance(this);
+        if(Preference.getAppPreference(preferences, Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED,false)){
             Intent in = new Intent(getApplicationContext(), EventsExecutionActivity.class);
             in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(in);
         }
     }
+
 }

@@ -12,6 +12,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="record_name">Рекорд:</string>
     <string name="new_event_name">новое событие</string>
+    <string name="change_event_name">изменение события</string>
     <string name="choice_icon_name">выбор специальной иконки</string>
     <string name="current_quantity_name">дни</string>
     <string name="event_name">событие</string>

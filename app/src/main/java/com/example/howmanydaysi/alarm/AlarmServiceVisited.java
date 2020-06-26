@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 
@@ -20,15 +21,15 @@ public class AlarmServiceVisited extends BroadcastReceiver {
 //Если включено уведомление, и пользователь не отметился после 00:00, то текущие дни обнулятся
     @Override
     public void onReceive(Context context, Intent intent) {
-        Preference.setContext(context);
+        SharedPreferences preferences = Preference.getInstance(context);
 
-        if (!Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_VISITED, false)) {
+        if (!Preference.getAppPreference(preferences,Preference.APP_PREFERENCES_NAME_VISITED, false)) {
             AlarmService.CloseAlarm();
             NotificationActivity.zeroingCurrentDays(context);
         }
-        Preference.setAppPreference(Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED, false);
-        Preference.setAppPreference(Preference.APP_PREFERENCES_NAME_VISITED, false);//отметился ли пользователь делаем false
-        Preference.setAppPreference(Preference.APP_PREFERENCES_NAME_REMIND_TODAY,false);//было сегодня уведомление делаем false
+        Preference.setAppPreference(preferences, Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED, false);
+        Preference.setAppPreference(preferences, Preference.APP_PREFERENCES_NAME_VISITED, false);//отметился ли пользователь делаем false
+        Preference.setAppPreference(preferences, Preference.APP_PREFERENCES_NAME_REMIND_TODAY,false);//было сегодня уведомление делаем false
     }
 }
 

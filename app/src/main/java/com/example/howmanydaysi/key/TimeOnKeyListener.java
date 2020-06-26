@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -33,6 +34,7 @@ public class TimeOnKeyListener implements View.OnKeyListener{
     }
     public boolean onKey(View v, int keyCode, KeyEvent event) {
     //обработка нажатия на enter при вводе  времени
+        SharedPreferences preferences = Preference.getInstance(v.getContext());
         boolean consumed = false;
         if (keyCode == KEYCODE_ENTER) {
 
@@ -41,6 +43,9 @@ public class TimeOnKeyListener implements View.OnKeyListener{
                 Toast.makeText(context,
                         "Введите значение",
                         Toast.LENGTH_SHORT).show();
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInputFromInputMethod(editText.getWindowToken(), 0);
+
             }
             else {
                 if (editText.getText().toString().length() != 5) {
@@ -56,7 +61,7 @@ public class TimeOnKeyListener implements View.OnKeyListener{
                         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                         editText.setCursorVisible(false);
-                        Preference.setAppPreference(Preference.APP_PREFERENCES_NAME_TIME, editText.getText().toString());
+                        Preference.setAppPreference(preferences, Preference.APP_PREFERENCES_NAME_TIME, editText.getText().toString());
 
                         //если время уведомления введено правильно
                         if (isFirstPress){
@@ -81,6 +86,7 @@ public class TimeOnKeyListener implements View.OnKeyListener{
                         Toast.makeText(context,
                                 "Неверное значение",
                                 Toast.LENGTH_SHORT).show();
+
                         e.printStackTrace();
                     }
 

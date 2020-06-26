@@ -11,11 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.howmanydaysi.R;
-import com.example.howmanydaysi.model.Event;
 import com.example.howmanydaysi.model.EventEntity;
 import com.example.howmanydaysi.service.WordsForm;
-
-import java.util.List;
 
 public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
     protected TextView eventTextView;

@@ -2,6 +2,7 @@ package com.example.howmanydaysi.activity;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import com.example.howmanydaysi.R;
 import com.example.howmanydaysi.RecyclerItemClickListener;
 import com.example.howmanydaysi.adapter.EventListAdapter;
 import com.example.howmanydaysi.dataDase.DBHelper;
-import com.example.howmanydaysi.model.Event;
+import com.example.howmanydaysi.model.EventWithCheck;
 import com.example.howmanydaysi.model.EventEntity;
 import com.example.howmanydaysi.preferences.Preference;
 import com.example.howmanydaysi.alarm.AlarmService;
@@ -35,7 +36,7 @@ public class EventsExecutionActivity extends AppCompatActivity {
     SQLiteDatabase database;
     protected LinearLayoutManager layoutManager;
     private boolean isScrollDown = false;
-    public List<Event> events = new ArrayList<>();
+    public List<EventWithCheck> eventWithChecks = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +69,9 @@ public class EventsExecutionActivity extends AppCompatActivity {
         });
         eventRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), (v, position) -> {
             CheckBox checkBox = v.findViewById(R.id.checkBox);
-            Event event = events.get(position);
+            EventWithCheck eventWithCheck = eventWithChecks.get(position);
             checkBox.setOnClickListener(v1 -> {
-                event.setCheck(((CheckBox) v1).isChecked());
+                eventWithCheck.setCheck(((CheckBox) v1).isChecked());
             });
 
         })
@@ -82,7 +83,6 @@ public class EventsExecutionActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         setListEvent();
-        Preference.setContext(this);
     }
 
     public void setListEvent() {
@@ -101,8 +101,8 @@ public class EventsExecutionActivity extends AppCompatActivity {
                 EventEntity eventEntity = new EventEntity(cursor.getString(eventIndex),
                         cursor.getInt(iconIndex), cursor.getInt(currentQuantityIndex),
                         cursor.getInt(recordQuantityIndex));
-                Event event = new Event(eventEntity, true);
-                events.add(event);
+                EventWithCheck eventWithCheck = new EventWithCheck(eventEntity, true);
+                eventWithChecks.add(eventWithCheck);
                 eventListAdapter.eventEntityList.add(eventEntity);
             } while (cursor.moveToNext());
 
@@ -128,12 +128,12 @@ public class EventsExecutionActivity extends AppCompatActivity {
         int currentQuantityIndex = cursor.getColumnIndex(DBHelper.FIELD_CURRENT_QUANTITY);
         int recordQuantityIndex = cursor.getColumnIndex(DBHelper.FIELD_RECORD_QUANTITY);
 
-        for (int i = 0; i < events.size(); i++) {
+        for (int i = 0; i < eventWithChecks.size(); i++) {
             ContentValues contentValues = new ContentValues();
             contentValues.put(DBHelper.FIELD_EVENT, eventListAdapter.eventEntityList.get(i).text);
             contentValues.put(DBHelper.FIELD_ICON, eventListAdapter.eventEntityList.get(i).getIconID());
             cursor.moveToPosition(i);
-            if (events.get(i).isCheck()) {
+            if (eventWithChecks.get(i).isCheck()) {
                 int current = cursor.getInt(currentQuantityIndex) + 1;
                 int record = cursor.getInt(recordQuantityIndex);
                 contentValues.put(DBHelper.FIELD_CURRENT_QUANTITY, current);
@@ -153,10 +153,9 @@ public class EventsExecutionActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
 
 
-
-
-        Preference.setAppPreference(Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED,false);
-        Preference.setAppPreference(Preference.APP_PREFERENCES_NAME_VISITED, true);
+        SharedPreferences preferences = Preference.getInstance(this);
+        Preference.setAppPreference(preferences, Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED,false);
+        Preference.setAppPreference(preferences, Preference.APP_PREFERENCES_NAME_VISITED, true);
         AlarmService.CloseAlarm();
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -169,7 +168,6 @@ public class EventsExecutionActivity extends AppCompatActivity {
     public void onBackPressed() {
 
     }
-
 
 }
 

@@ -7,4 +7,5 @@
     <color name="colorMenu">#F0FFFF</color>
     <color name="baseColor">#008000</color>
     <color name="checkBoxColor">#2E8B57</color>
+    <color name="colorCalendarMark">#61E864</color>
 </resources>

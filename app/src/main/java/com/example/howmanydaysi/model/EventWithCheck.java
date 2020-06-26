@@ -1,6 +1,6 @@
 package com.example.howmanydaysi.model;
 
-public class Event {
+public class EventWithCheck {
     private boolean check;
     private EventEntity eventEntity;
 
@@ -8,13 +8,13 @@ public class Event {
         return eventEntity;
     }
 
-    public Event(EventEntity eventEntity, boolean check)//делаем из eventEntity Event;
+    public EventWithCheck(EventEntity eventEntity, boolean check)//делаем из eventEntity Event;
     //// Event используется когда пользователь отмечает выполнение
     {
         this.eventEntity=eventEntity;
         this.check=check;
     }
-    public  Event(){}
+    public EventWithCheck(){}
 
     public boolean isCheck() {
         return check;

@@ -2,6 +2,7 @@ package com.example.howmanydaysi.activity;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -137,9 +138,10 @@ public void setListEvent()//установление значений в Recycle
                 database = dBHelper.getWritableDatabase();
                 long y=database.delete(DBHelper.TABLE_EVENTS, DBHelper.FIELD_ID + "=" + (position+1), null);
                 //уменьшение сохранённого количества элементов на 1
-                Preference.setAppPreference(
+                SharedPreferences preferences = Preference.getInstance(this);
+                Preference.setAppPreference(preferences,
                         Preference.APP_PRECEFENCES_NAME_EVENT_COUNT,
-                        Preference.getAppPreference(Preference.APP_PRECEFENCES_NAME_EVENT_COUNT,0) -1
+                        Preference.getAppPreference(preferences, Preference.APP_PRECEFENCES_NAME_EVENT_COUNT,0) -1
                 );
                 setListEvent();
                 rewritingDataBase();
@@ -171,13 +173,9 @@ public void setListEvent()//установление значений в Recycle
         startActivity(intent);
     }
 
+
     @Override
-    protected void onStart() {
-        super.onStart();
-        if(Preference.getAppPreference(Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED,false)){
-            Intent in = new Intent(getApplicationContext(), EventsExecutionActivity.class);
-            in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(in);
-        }
+    protected void onRestart() {
+        super.onRestart();
     }
 }

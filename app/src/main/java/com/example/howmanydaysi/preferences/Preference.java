@@ -4,53 +4,54 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class Preference {
-    public static final String APP_PREFERENCES = "mysetеings";
-    public static final String APP_PREFERENCES_NAME_VIBRATE = "vibrate";
-    public static final String APP_PREFERENCES_NAME_MELODY = "melody";
-    public static final String APP_PREFERENCES_NAME_TIME = "time";
-    public static final String APP_PREFERENCES_NAME_REMIND_TODAY = "today";
-    public static final String APP_PREFERENCES_NAME_VISITED = "visited";
-    public static final String APP_PREFERENCES_NAME_ALARM_ACTIVATED = "alarm";
-    public static final String APP_PRECEFENCES_NAME_EVENT_COUNT = "event_count";
-    private static Context mainContext;
-    private static  SharedPreferences mSettings;
-    public static void setContext(Context context){
-        mainContext = context;
-        mSettings = mainContext.getSharedPreferences(APP_PREFERENCES,
-                Context.MODE_PRIVATE);
+    static public final String APP_PREFERENCES = "mysetеings";
+    static public final String APP_PREFERENCES_NAME_VIBRATE = "vibrate";
+    static public final String APP_PREFERENCES_NAME_MELODY = "melody";
+    static public final String APP_PREFERENCES_NAME_TIME = "time";
+    static public final String APP_PREFERENCES_NAME_REMIND_TODAY = "today";
+    static public final String APP_PREFERENCES_NAME_VISITED = "visited";
+    static public final String APP_PREFERENCES_NAME_ALARM_ACTIVATED = "alarm";
+    static public final String APP_PRECEFENCES_NAME_EVENT_COUNT = "event_count";
+
+    static private SharedPreferences instance;
+    //Паттерн одиночка
+    static public SharedPreferences getInstance(Context context){
+        if (instance == null){
+            instance = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        }
+        return instance;
     }
-    public static void setAppPreference(String preference, boolean value){
-        SharedPreferences.Editor e=mSettings.edit();
+    static public void setAppPreference(SharedPreferences sharedPref, String preference, boolean value){
+        SharedPreferences.Editor e=sharedPref.edit();
         e.putBoolean(preference, value);
         e.apply();
-
     }
-    public static  boolean getAppPreference(String preference, boolean defVal){
-       return   mSettings.getBoolean(preference, defVal);
+    static public boolean getAppPreference(SharedPreferences sharedPref, String preference, boolean defVal){
+       return   sharedPref.getBoolean(preference, defVal);
     }
-    public static void setAppPreference(String preference, String value){
-        SharedPreferences.Editor e=mSettings.edit();
+    static public void setAppPreference(SharedPreferences sharedPref, String preference, String value){
+        SharedPreferences.Editor e=sharedPref.edit();
         e.putString(preference, value);
         e.apply();
     }
-    public static  String getAppPreference(String preference, String defVal){
-        return   mSettings.getString(preference, defVal);
+    static public String getAppPreference(SharedPreferences sharedPref, String preference, String defVal){
+        return   sharedPref.getString(preference, defVal);
     }
-    public static void setAppPreference(String preference, int value){
-        SharedPreferences.Editor e=mSettings.edit();
+    static public void setAppPreference(SharedPreferences sharedPref, String preference, int value){
+        SharedPreferences.Editor e=sharedPref.edit();
         e.putInt(preference, value);
         e.apply();
     }
-    public static  int getAppPreference(String preference, int defVal){
-        return   mSettings.getInt(preference, defVal);
+    static public int getAppPreference(SharedPreferences sharedPref, String preference, int defVal){
+        return   sharedPref.getInt(preference, defVal);
     }
 
-    public static boolean isFirstOpen(){
-        return ! mSettings.contains(APP_PREFERENCES_NAME_TIME);
+    static public boolean isFirstOpen(SharedPreferences sharedPref){
+        return ! sharedPref.contains(APP_PREFERENCES_NAME_TIME);
     }
 
-    public static void setDefaultPreference() {
-        SharedPreferences.Editor e=mSettings.edit();
+    static public void setDefaultPreference(SharedPreferences sharedPref) {
+        SharedPreferences.Editor e=sharedPref.edit();
         e.putBoolean(APP_PREFERENCES_NAME_VIBRATE, true);
         e.putBoolean(APP_PREFERENCES_NAME_MELODY, true);
         e.putBoolean(APP_PREFERENCES_NAME_REMIND_TODAY, false);

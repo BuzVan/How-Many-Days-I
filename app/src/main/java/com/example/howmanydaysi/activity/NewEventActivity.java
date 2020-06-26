@@ -2,6 +2,7 @@ package com.example.howmanydaysi.activity;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,11 +46,12 @@ public class NewEventActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+        TextView titleTextView = findViewById(R.id.heading_textView);
         Bundle intent = getIntent().getExtras();
         if(intent!=null)
             position=intent.getInt("position");
          if(position!=-1) {
+             //изменеие события
              dBHelper = new DBHelper(getApplicationContext());
              database = dBHelper.getWritableDatabase();
              Cursor cursor = database.query(DBHelper.TABLE_EVENTS, null, null, null, null, null, null);
@@ -65,13 +68,18 @@ public class NewEventActivity extends AppCompatActivity {
              currentDays=cursor.getInt(currentQuantityIndex);
              recordDays=cursor.getInt(recordQuantityIndex);
              cursor.close();
+             titleTextView.setText(getResources().getText(R.string.change_event_name));
          }
          else
          {
+             //новое событие
              //изображение по умолчанию
-             previousView = findViewById(R.id.food);
+             previousView = findViewById(R.id.study);
              previousView.setBackground(getResources().getDrawable(R.drawable.image_style));
-             imageID = R.drawable.food;
+             imageID = R.drawable.study;
+
+             eventText.setText(getResources().getText(R.string.new_event_name));
+             titleTextView.setText(getResources().getText(R.string.new_event_name));
          }
     }
 //обработка нажатия на стрелку
@@ -211,9 +219,10 @@ public class NewEventActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),
                     "Событие создано",
                     Toast.LENGTH_SHORT).show();
-            Preference.setAppPreference(
+            SharedPreferences preferences = Preference.getInstance(this);
+            Preference.setAppPreference( preferences,
                     Preference.APP_PRECEFENCES_NAME_EVENT_COUNT,
-                    Preference.getAppPreference(Preference.APP_PRECEFENCES_NAME_EVENT_COUNT,0) +1
+                    Preference.getAppPreference(preferences, Preference.APP_PRECEFENCES_NAME_EVENT_COUNT,0) +1
                     );
         }
         else {//изменение данных
