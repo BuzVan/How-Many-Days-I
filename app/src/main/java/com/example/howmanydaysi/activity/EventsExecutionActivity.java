@@ -156,7 +156,7 @@ public class EventsExecutionActivity extends AppCompatActivity {
         SharedPreferences preferences = Preference.getInstance(this);
         Preference.setAppPreference(preferences, Preference.APP_PREFERENCES_NAME_ALARM_ACTIVATED,false);
         Preference.setAppPreference(preferences, Preference.APP_PREFERENCES_NAME_VISITED, true);
-        AlarmService.CloseAlarm();
+        AlarmService.CloseAlarm(this);
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(intent);
@@ -164,10 +164,6 @@ public class EventsExecutionActivity extends AppCompatActivity {
         this.finish();
     }
 
-    @Override
-    public void onBackPressed() {
-
-    }
 
 }
 

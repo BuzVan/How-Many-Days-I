@@ -148,7 +148,7 @@ boolean notification, melody, vibrate;
                     Toast.LENGTH_SHORT).show();
         }
         //ночное событие:
-        Calendar midnight=new GregorianCalendar(now.get(Calendar.YEAR),now.get(Calendar.MONTH),now.get(Calendar.DAY_OF_MONTH),0,0,0);
+        Calendar midnight=new GregorianCalendar(now.get(Calendar.YEAR),now.get(Calendar.MONTH),now.get(Calendar.DAY_OF_MONTH),0,0,1);
         midnight.add(Calendar.DATE,1);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, midnight.getTimeInMillis(), INTERVAL_DAY, pendingIntent1);
         Log.i("ALARM_MIDNIGHT", format.format(midnight.getTime()));

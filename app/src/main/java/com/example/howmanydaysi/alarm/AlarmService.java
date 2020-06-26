@@ -24,9 +24,13 @@ public class AlarmService extends BroadcastReceiver {
     private static  NotificationManagerCompat notificationManager;
     public static int id = 1;
     public static void CloseAlarm(){
-        if (null != notificationManager){
+        if (null != notificationManager) {
             notificationManager.cancel(id);
         }
+    }
+    public static void CloseAlarm(Context context){
+        notificationManager = NotificationManagerCompat.from(context);
+        CloseAlarm();
     }
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -60,7 +64,7 @@ public class AlarmService extends BroadcastReceiver {
                         .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.icon_calendar))
                         .setColor(Color.GRAY)
                         .setOngoing(true)
-                        .setAutoCancel(true);
+                        .setAutoCancel(false);
 
         Notification notification = builder.build();
         if (melody)
